@@ -139,14 +139,14 @@ render(){
                                  { knownLanguage.map(item => 
                                 <ButtonTypeRadio 
                                 key={item.key}
-                                style={item==this.state.selectedLanguage?localStyles.activeButtonStyle:localStyles.buttonStyle} 
+                                style={item==this.state.selectedLanguage?[{...localStyles.activeButtonStyle,...localStyles.activeWorkType}]:[{...localStyles.buttonStyle,...localStyles.passiveWorkType}]} 
                                 item={item} 
                                 handleClick={this.onLanguageChange.bind(this)}
                                 />)}
                             </View>
                             <View style={{justifyContent:'flex-end',flexDirection:'row',flex:3,flexWrap:'wrap'}}>
-                                <TouchableOpacity onPress={()=>this.setWorkType("Uploaded")} ><Text style={[{...localStyles.toggleFirstHalf},this.state.workType!="Uploaded"?{backgroundColor:'white'}:{}]}>Uploaded</Text></TouchableOpacity>
-                                <TouchableOpacity onPress={()=>this.setWorkType("Pending")} ><Text style={[{...localStyles.toggleSecondHalf},this.state.workType!="Pending"?{backgroundColor:'white'}:{}]}>Pending</Text></TouchableOpacity>
+                                <TouchableOpacity onPress={()=>this.setWorkType("Uploaded")} ><Text style={[{...localStyles.toggleFirstHalf},this.state.workType!="Uploaded"?{...localStyles.passiveWorkType}:{...localStyles.activeWorkType}]}>Uploaded</Text></TouchableOpacity>
+                                <TouchableOpacity onPress={()=>this.setWorkType("Pending")} ><Text style={[{...localStyles.toggleSecondHalf},this.state.workType!="Pending"?{...localStyles.passiveWorkType}:{...localStyles.activeWorkType}]}>Pending</Text></TouchableOpacity>
                             </View>
                         </View>
                         <View style={localStyles.tileContainer}>
@@ -216,8 +216,9 @@ const localStyles= StyleSheet.create({
     },
     Profile:{
         top:'-15%',
-       // width:'30%',
-       flex:3,
+        width:'30%',
+       // height:'100%',
+        flex:3,
         margin:5,
         padding:5,       
         alignItems:'center',
@@ -234,6 +235,8 @@ const localStyles= StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         flexWrap:'nowrap',
+        overflow:'auto',
+        
         
        zIndex:0,
       },
@@ -248,7 +251,7 @@ const localStyles= StyleSheet.create({
          justifyContent: 'flex-start',
          alignContent:'flex-start',
          flexWrap:'wrap',
-        // overflow:'scroll',
+         //overflow:'auto',
         // top:100,
        },
       tileContainer:{
@@ -261,7 +264,7 @@ const localStyles= StyleSheet.create({
         justifyContent: 'flex-start',
         alignContent:'flex-start',
         flexWrap:'wrap',
-       // overflow:'scroll',
+        overflow:'auto',
        // top:100,
       },
       lanConatiner:{ 
@@ -282,8 +285,8 @@ const localStyles= StyleSheet.create({
         borderWidth:1,
         borderRadius:10,
         margin:5,
-        height:15,
-        fontSize:10,
+        height:20,
+        //fontSize:10,
         paddingHorizontal:2,
       },
       
@@ -293,8 +296,8 @@ const localStyles= StyleSheet.create({
         borderWidth:1,
         borderRadius:10,
         margin:5,
-        height:15,
-        fontSize:10,
+        height:20,
+        //fontSize:10,
         paddingHorizontal:2,
       },
       toggleFirstHalf:{
@@ -305,8 +308,8 @@ const localStyles= StyleSheet.create({
         borderTopEndRadius:0,
         paddingHorizontal:2,
         marginVertical:5,
-        height:15,
-        fontSize:10,
+        height:20,
+        //fontSize:10,
       },
       toggleSecondHalf:{
         backgroundColor:Colors.dashboardRow2Color,
@@ -317,9 +320,24 @@ const localStyles= StyleSheet.create({
         paddingHorizontal:2,
         //marginTop:5,
         marginVertical:5,
-        height:15,
-        fontSize:10,
+        height:20,
+       // fontSize:10,
+      },
+      passiveWorkType:{
+        fontFamily:'Roboto',
+        fontSize:'14px',
+        fontWeight:'500',
+        fontStyle:'normal',
+        lineHeight:'20px',
+        backgroundColor:'white',
+      },
+      activeWorkType:{
+        fontFamily:'Roboto',
+        fontSize:'14px',
+        fontWeight:'500',
+        fontStyle:'normal',
+        lineHeight:'20px',
+        
       }
-
 
 });

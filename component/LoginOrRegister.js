@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {Text, View, TextInput, TouchableOpacity,Image } from 'react-native'
 import CheckBox from "expo-checkbox";
+import axios from "axios";
 
 import LabelContainer from "./LabelContainer";
 import SelectBox from './CustomSelect';
@@ -29,6 +30,7 @@ constructor(props){
     isCreate:'',
     language:[],
     rememberMe:false,
+    Error1:"",
     
   };
   //props.navigation.navigate('Profile',{name:"Vineet Kumar"});
@@ -86,7 +88,9 @@ onUsernameChange(text) {
 onPasswordChange(text) {
     this.setState({ password: text });
 }
-
+onErrorChange(text) {
+    this.setState({ Error1: text });
+}
 onConfirmPasswordChange(text) {
     this.setState({ confirmPassword: text });
 }
@@ -105,46 +109,7 @@ handleForgotPassword(){
 	////alert("blank forgot password called");
 }
 handleRequest(props) {
-    //alert("handleRequest");
-	////alert("a");
-	//alert("username="+this.state.username);
-	//alert("password="+this.state.password);
-    if(props.action!="Login")
-    {
-	//alert("confirmPassword="+this.state.confirmPassword);
-	//alert("rememberMe="+this.state.rememberMe);
-	for(var i=0;i<this.state.language.length;i++){
-    //alert("language="+this.state.language[i].item);
-	}
-    }
-    /*
-    const endpoint = this.state.isCreate=="true" ? 'register' : 'login';
-    const payload = { username: this.state.username, password: this.state.password } 
     
-    if (this.state.isCreate=="true") {
-      payload.confirmPassword = this.state.confirmPassword;
-      payload.language = this.state.language;
-    }
-    ////alert('2');
-    axios
-      .post(`/auth/${endpoint}/`, payload)
-      .then(response => {
-        const { token, user } = response.data;
-        // We set the returned token as the default authorization header
-        axios.defaults.headers.common.Authorization = `Token ${token}`;
-        // Navigate to the home screen
-        Actions.main();
-      })
-      .catch(error => console.log(error));
-      ////alert('3');
-      */
-     const tempUser={
-     name:"Vineet1 Kumar",
-     intro:"hjghj bjkhjk kljk hiuhji",
-     location: "Hyderabad",
-     languages:[{id:"Hindi",item:"Hindi"},{id:"English",item:"English"}]
-     }
-     props.navigation.navigate('UserDashboard',{user:tempUser});
 }
   
 renderLoginField(){
@@ -156,6 +121,7 @@ renderLoginField(){
             headerBackgroundColor={Colors.LoginHeaderBackgroundColor} 
             borderColor={Colors.LoginBorderColor}>
             <TextInput 
+            style={styles.loginTextInput}
 			placeholder="Username" 
 			name="username"
 			value={this.state.username} 
@@ -169,6 +135,7 @@ renderLoginField(){
             headerBackgroundColor={Colors.LoginHeaderBackgroundColor} 
             borderColor={Colors.LoginBorderColor}>
             <TextInput 
+            style={styles.loginTextInput}
 			placeholder="Password" 
             placeholderTextColor='grey'
 			name="password"
@@ -191,6 +158,7 @@ renderCreateField(){
             headerBackgroundColor={Colors.LoginHeaderBackgroundColor} 
             borderColor={Colors.LoginBorderColor}>
             <TextInput
+            style={styles.loginTextInput}
 			secureTextEntry="true"
 			placeholder="Confirm Password" 
             placeholderTextColor='grey'
@@ -224,13 +192,13 @@ renderRememberMe() {
     return (
     <View  style={{flexDirection:'row', justifyContent:'space-between',flexWrap:"wrap"}}>
         <View>
-            <Text>
+            <Text style={styles.greetingText}>
             <CheckBox value={this.state.rememberMe} onValueChange={this.onRememberMeChange.bind(this)} color={Colors.LoginBorderColor} />
                 Remember Me&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </Text>
         </View>
         <View>
-            <Text onPress={this.handleForgotPassword.bind(this)}>
+            <Text onPress={this.handleForgotPassword.bind(this)} style={styles.greetingText}>
                 Forgot Password?
             </Text>
         </View>
@@ -277,13 +245,13 @@ renderGreetings(){
         >
             <br/>
             <center>
-                <Text style={styles.textWhite}>
-                    <b>{this.greetings}</b>
+                <Text style={[styles.textWhite,styles.header]}>
+                    {this.greetings}
                 </Text>
             </center>
             <br/>
             <center>
-                <Text> 
+                <Text  style={[styles.greetingText]}> 
                     {this.message}
                 </Text>
             </center>
@@ -305,7 +273,7 @@ render(){
             <Image style={styles.logo} source={require("../assets/iiitnew.png")} />
                 <br/>
                 <View style={{width:'80%',alignSelf:'center'}}>
-                   <center> <Text>{this.headerText}</Text></center>
+                   <center> <Text style={styles.loginHeaderText}>{this.headerText}</Text></center>
                     {this.renderLoginField()}
                     {this.renderCreateField()}
                     {this.renderActionButton()}

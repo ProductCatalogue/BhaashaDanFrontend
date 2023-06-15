@@ -59,31 +59,75 @@ this.user=this.propsSourceObject.user;
                 <View style={styles.imageContainer}>
                     <Image style={styles.profileImageStyle} source={require("../assets/iiitnew.png")} />
                 </View>          
-                <Text>{this.user.name}</Text>
-                <Text>{this.user.intro}</Text>
+                <Text style={styles.nameText}>{this.user.name}</Text>
+                <Text style={styles.introText}>{this.user.intro}</Text>
                 <br/>
-                <Text>{this.user.location}</Text>
+                <Text style={styles.locationText}>{this.user.location}</Text>
                 <TouchableOpacity style={styles.buttonContainer}>
                     <Text  style={styles.appButtonText} onPress={this.editProfile.bind(this)}>
                         
-                    <MaterialIcons name="edit" size={10} color="white" />
+                    <MaterialIcons name="edit" size={16} color="white" />
                     Edit Your Profile
                     </Text>
                 </TouchableOpacity>
-                <Text>languages({this.user.languages.length})</Text>
+                <Text style={styles.languageHeader}>Languages({this.user.languages.length})</Text>
                 <View>
+                    <Text style={styles.languagesText}>
                     {this.renderLanguages()}
+                    </Text>
                 </View>
             </View>
         );
     }
 }
 const styles=StyleSheet.create({
+    nameText:{
+        fontFamily: 'Montserrat',
+        fontWeight:'700',
+        fontSize: '32px',
+        lineHeight:'50px',
+        fontStyle:'normal',
+        textAlign:'center',
+    },
+    introText:{
+        fontFamily: 'Montserrat',
+        fontWeight:'500',
+        fontSize: '18px',
+        lineHeight:'22px',
+        fontStyle:'normal',
+        textAlign:'center', 
+    },
+    locationText:{
+        fontFamily: 'Montserrat',
+        fontWeight:'500',
+        fontSize: '20px',
+        lineHeight:'24px',
+        fontStyle:'normal',
+        textAlign:'center', 
+    },
+    languageHeader:{
+        fontFamily: 'Montserrat',
+        fontWeight:'600',
+        fontSize: '18px',
+        lineHeight:'22px',
+        fontStyle:'normal',
+        textAlign:'center', 
+    },
+    languagesText:{
+        fontFamily: 'Montserrat',
+        fontWeight:'500',
+        fontSize: '18px',
+        lineHeight:'22px',
+        fontStyle:'normal',
+        textAlign:'left', 
+    },
 profileStyle:{
     alignItems:'center',
     backgroundColor:'#d7f8eb',
     borderRadius:5, 
-    
+    height:'90%',
+    width:'90%',
+   overflow:'auto',
 },
 imageContainer:{
     borderRadius: 120,
@@ -103,26 +147,33 @@ profileEditButton:{
     color:'green',
 },
 buttonContainer:{
-    width:100,
+    width:150,
     height:50,
     fontSize:5,
     borderRadius:5,  
-    //textAlignVertical:'top', 
-   // verticalAlign:'middle',
+    textAlignVertical:'center', 
+    //verticalAlign:'middle',
     //textAlign:'center',
 },
 appButtonText:{
     backgroundColor:'#0ccb7c',
     borderRadius:5,
-    height:18,
-    fontSize:10,
+    height:28,
+    //fontSize:16,
     textAlign:'center',
     padding:2,
     margin:2,
     color:'white',
+    fontFamily: 'Roboto',
+    fontWeight:'500',
+    fontSize: '16px',
+    lineHeight:'20px',
+    //fontStyle:'normal',
+    textAlign:'center',
     //alignSelf:'center',
     //alignItems:'center',
    // alignContent:'center',
+   textAlignVertical:'center',
     
     
     

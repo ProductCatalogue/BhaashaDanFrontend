@@ -40,8 +40,11 @@ const styles = StyleSheet.create({
         justifyContent:'center',     
       },
       label: {
-        fontFamily: 'Avenir-Heavy',
-        fontSize: 12,
+        fontFamily: 'Roboto',
+        fontWeight:'400',
+        fontSize: '12px',
+        lineHeight:'16px',
+        fontStyle:'regular',
         top:-8,
         left:10,
         position: 'absolute',

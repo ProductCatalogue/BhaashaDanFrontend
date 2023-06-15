@@ -107,9 +107,11 @@ export default ModalView;
 
 const modalViewStyle=StyleSheet.create({
     modalContainer:{
-        minHeight:250,
-        minWidth:250,
-        maxWidth:500,
+       // minHeight:250,
+       // minWidth:250,
+       // maxWidth:500,
+       height:'75%',
+       width:'75%',
         backgroundColor:"white",
         justifyContent:'center',
         alignContent:'center',
@@ -122,8 +124,8 @@ const modalViewStyle=StyleSheet.create({
     },
     contentContainer:{
       borderWidth:1,
-      minheight:'100',
-      width:'100',
+      minheight:'75%',
+      width:'75%',
       resizeMode:'contain',
      // flexGrow:1,
     },

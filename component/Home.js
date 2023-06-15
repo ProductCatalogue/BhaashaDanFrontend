@@ -10,10 +10,10 @@ const Home=(props)=>{
               <Image style={Styles.logo} source={require("../assets/iiitnew.png")} />
               <View style={Styles.homeContentContainer} >
                 <View style={Styles.homeLeftContainer}>
-                  <Text>
-                    <h2>heading aaa</h2>
-                    a iuhijs niojnjoj knioj onioj konin a iuhijs niojnjoj knioj onioj konin a iuhijs niojnjoj knioj onioj konin a iuhijs niojnjoj knioj onioj konin 
-                    a iuhijs niojnjoj knioj onioj konin joniojn a iuhijs niojnjoj knioj onioj konin joniojna iuhijs niojnjoj knioj onioj konin joniojna iuhijs niojnjoj knioj onioj konin joniojn
+                <text style={Styles.homeHeading}>Lorem ipsum dolor sit amet consectetur.</text>
+                  <Text style={Styles.homeTextContent}>
+                    
+                  Lorem ipsum dolor sit amet consectetur. Leo amet condimentum urna maecenas erat tincidunt. Quis commodo cras in accumsan mi neque. Morbi vivamus a tempor tellus at.
                   </Text>
                 </View>
                 <View style={Styles.homeRightContainer}>

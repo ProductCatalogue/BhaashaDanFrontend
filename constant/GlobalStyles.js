@@ -4,8 +4,18 @@ import Colors from './color';
 
 export default StyleSheet.create({
     header:{
-        backgroundColor:'red',
-        justifyContent:'space-evenly'
+        fontFamily:'Montserrat',
+        fontSize:'36px',
+        fontWeight:'700',
+        fontStyle:'Bold',
+        lineHeight:'50px',
+    },
+    greetingText:{
+        fontFamily:'Montserrat',
+        fontSize:'24px',
+        fontWeight:'500',
+        fontStyle:'normal',
+        lineHeight:'29px',
     },
     loginContainer:{
       width:'100%',
@@ -76,18 +86,39 @@ export default StyleSheet.create({
         color:'#0ccb7c', 
       },
       textWhite:{
-        color:'white',
+        color:'#FCFCFC',
+      },
+      loginHeaderText:{
+        fontFamily: 'Montserrat',
+        fontWeight:'400',
+        fontSize: '36px',
+        fontWeight:'500',
+        fontStyle:'Bold',
+        lineHeight:'50px',
+        color:Colors.LoginHeaderText,
+      },
+      loginTextInput:{
+        fontFamily: 'Roboto',
+        fontStyle:'Regular',
+        fontSize:'16px',
+        //fontWeight:'500',
+        lineHeight:'24px',
+        height:'30px',
       },
       button:{
         backgroundColor:'#0ccb7c',
         borderRadius:5,
         paddingHorizontal:10,
         paddingVertical:5,
+        fontFamily: 'Roboto',
+        fontStyle:'Medium',
+        fontSize:'16px',
+        fontWeight:'500',
+        lineHeight:'20px',
         shadowOffset:{
           width:0,
           height:0,
-  
-        }
+          }
       },
       backGroundGreen:{
         backgroundColor:'#0ccb7c',
@@ -110,6 +141,7 @@ export default StyleSheet.create({
         width:'100%',
         height:'100%', 
         backgroundColor:Colors.HomeColor,
+        
       },
     homeContentContainer:{
         width:'100%',
@@ -121,7 +153,24 @@ export default StyleSheet.create({
         alignItems:'center',
         flexDirection:'row',
         color:'black',
-        flexWrap:'wrap',  
+        flexWrap:'wrap', 
+        
+    },
+    homeHeading:{
+      
+      fontSize:'40px',
+      fontFamily: 'Montserrat',
+      fontWeight:'500',
+      lineHeight:'48.76px',
+        
+    },
+    homeTextContent:{
+      
+      fontSize:'24px',
+      lineHeight:'29.26px',
+      fontFamily: 'Montserrat',
+      fontWeight:'400',
+        
     },
     homeLeftContainer:{
         backgroundColor:Colors.HomeColor,
