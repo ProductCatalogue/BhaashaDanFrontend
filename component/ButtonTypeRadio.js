@@ -9,7 +9,8 @@ const ButtonTypeRadio=(props)=>{
     const {style,item,handleClick,...restOfProps}={...props}
     //alert(data);
     return(
-            <TouchableOpacity onPress={()=>handleClick(item)} ><Text  style={style} >{ item.item}&nbsp;</Text></TouchableOpacity>
+            <TouchableOpacity onPress={()=>handleClick(item)} ><Text  style={style} {...restOfProps}>{ item.item}&nbsp;</Text>
+            </TouchableOpacity>
     );
 }
 

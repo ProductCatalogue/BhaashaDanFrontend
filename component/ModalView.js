@@ -8,6 +8,7 @@ import { ReactNativeZoomableView } from '@openspacelabs/react-native-zoomable-vi
 import Colors from '../constant/color';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { AntDesign } from '@expo/vector-icons'; 
+
 //import {VisionCamera} from 'react-native-vision-camera'
 //import {launchImageLibrary} from 'react-native-image-picker'
 //import {v} from 'react-native-vision-camera'
@@ -21,9 +22,9 @@ import { AntDesign } from '@expo/vector-icons';
                         const ModalView=(props)=>{
                           const leftZoomableViewRef=createRef(ReactNativeZoomableView);
                           const rightZoomableViewRef=createRef(ReactNativeZoomableView);
-                            const {visible,item,onPressAction,workType,...restOfProp}=props;
+                            const {visible,item,onPressAction,onUploadAction,workType,...restOfProp}=props;
                             
-                             // alert(workType);
+                             // alert(item.id);
                         return(                  
                        <View style={modalViewStyle.modalContainer} >
                         
@@ -43,8 +44,8 @@ import { AntDesign } from '@expo/vector-icons';
                         >
                         
                         
-                          <Text>
-                        {item.description}vhgugjhgh
+                        <Text>
+                        {item.text}
                         </Text>
                         
                         
@@ -76,7 +77,8 @@ import { AntDesign } from '@expo/vector-icons';
                         visualTouchFeedbackEnabled={false}
                         
                         >
-                       <Image  style={modalViewStyle.image} source={require("../assets/iiitnew.png")} />
+                       
+                       <Image style={modalViewStyle.image} source={{uri:item.image}} />
                        </ReactNativeZoomableView>
                        
                        
@@ -84,7 +86,7 @@ import { AntDesign } from '@expo/vector-icons';
                        <View style={modalViewStyle.rightContainer}>
                         <View><Text>&nbsp;</Text></View>
                        
-                       <UploadImage onUpload={onPressAction}/>
+                       <UploadImage item={item} onUploadAction={onUploadAction} onPressAction={onPressAction}/>
                        <View><Text>&nbsp;</Text></View>
                        </View>
                        }
@@ -102,7 +104,48 @@ import { AntDesign } from '@expo/vector-icons';
                         </View>
                         </View>
                         );
+
+function uploadImageToserver(){
+  let self=this;
+  axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
+  const formData = new FormData();
+  formData.append('paragraph_id',item.id);
+  formData.append('image',);
+  //payload.image=
+  axios({
+    method: 'Post',
+    url: 'api/paragraph/post/',
+    data: formData
+  }).then(function (response) {
+    //alert(response.data.results );
+   // if(self.state.workType=='Pending'){
+        self.itemToRender[worktype][lan].count=response.data.count;
+        self.itemToRender[worktype][lan].pagenumber=self.itemToRender[worktype][lan].pagenumber+1;
+       // alert("count "+self.itemToRender[worktype][lan].count);
+        for(var i=0; i<response.data.results.length;i++)
+            self.itemToRender[worktype][lan].items.push(response.data.results[i]);
+   /* }
+    else{
+        self.uploadedTotalCount=response.data.count;
+        self.uploadedPageNumber=self.uploadedPageNumber+1;
+        alert("count "+self.uploadedPageNumber);
+        for(var i=0; i<response.data.results.length;i++)
+            self.uploadedItemToRender.push(response.data.results[i]);
+    }*/
+   // self.setState({pendingItemToRender:response.data.results});
+   self.setState({isLoading:false,refreshing:false});
+    //self.pendingItemToRender=response.data.results;
+    console.log(response.data);
+    })
+    .catch(function (error) {
+       // self.pageNumber=self.pageNumber-1;
+      console.log(error);
+      self.setState({isLoading:false,refreshing:false});
+      alert(error);
+    });
+}
                         }
+
 export default ModalView;
 
 const modalViewStyle=StyleSheet.create({
@@ -144,8 +187,8 @@ const modalViewStyle=StyleSheet.create({
         //flexGrow:1,
     },
     image:{
-      height:60,
-      width:120,
+      height:'100%',
+      width:'100%',
       justifyContent:'center',
       aspectRatio:1,
       alignItems:'center',

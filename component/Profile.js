@@ -5,12 +5,14 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 export default class Profile extends Component {
     propsSourceObject={} ;
-    user={
+    showEdit=false;
+    user={};
+    /*user={
         name:"Amit Kumar",
         intro:"hjghj bjkhjk kljk hiuhji",
         location: "Hyderabad",
         languages:[{id:"Hindi",item:"Hindi"},{id:"English",item:"English"}]
-        }
+        }*/
      state={
         data:[]
     }
@@ -26,19 +28,11 @@ export default class Profile extends Component {
           
 if(this.props.route && this.props.route.params && this.props.route.params.user!=undefined && this.props.route.params.user!=null)
 {
-    
     this.propsSourceObject=this.props.route.params;
-    //alert("param exists"+this.propsSourceObject);
 }
 else
 {
     this.propsSourceObject=this.props;
-    //alert("param not exists "+this.propsSourceObject);
-    /*if(props.user!=undefined && props.user!=null )
-        this.user=props.user;
-    else
-        this.user=true; 
-        //alert("param not exists "+this.create);*/
 }
 this.user=this.propsSourceObject.user;
           }
@@ -47,6 +41,7 @@ this.user=this.propsSourceObject.user;
           }
      renderLanguages ()  {
         return this.user.languages.map(lan => <li key={lan.id}>{lan.item}</li>)
+       //return "hindi";
       }
       editProfile(){
         //alert("edit Profile "+this.user.name);
@@ -57,20 +52,26 @@ this.user=this.propsSourceObject.user;
         return(
             <View style={styles.profileStyle}>
                 <View style={styles.imageContainer}>
-                    <Image style={styles.profileImageStyle} source={require("../assets/iiitnew.png")} />
+                    <Image style={styles.profileImageStyle} source={require("../assets/blank-profile.png")} />
                 </View>          
-                <Text style={styles.nameText}>{this.user.name}</Text>
-                <Text style={styles.introText}>{this.user.intro}</Text>
-                <br/>
-                <Text style={styles.locationText}>{this.user.location}</Text>
+                <Text style={styles.nameText}>{this.user.first_name} {this.user.last_name}</Text>
+                <Text style={styles.introText}>{this.user.mobile}</Text>
+                <br/><Text style={styles.locationText}> {this.user.dob}</Text>
+                
+                
+                   { this.showEdit==true?
                 <TouchableOpacity style={styles.buttonContainer}>
                     <Text  style={styles.appButtonText} onPress={this.editProfile.bind(this)}>
                         
                     <MaterialIcons name="edit" size={16} color="white" />
                     Edit Your Profile
                     </Text>
-                </TouchableOpacity>
-                <Text style={styles.languageHeader}>Languages({this.user.languages.length})</Text>
+                </TouchableOpacity>:<></>
+                }
+                    
+                
+                
+                <Text style={styles.languageHeader}>Languages</Text>
                 <View>
                     <Text style={styles.languagesText}>
                     {this.renderLanguages()}
@@ -104,6 +105,7 @@ const styles=StyleSheet.create({
         lineHeight:'24px',
         fontStyle:'normal',
         textAlign:'center', 
+        marginBottom:20,
     },
     languageHeader:{
         fontFamily: 'Montserrat',
@@ -139,7 +141,7 @@ imageContainer:{
 },
 profileImageStyle:{
     width: 100,
-    height: 50,
+    height: 100,
     aspectRatio:1,
     resizeMode:'contain',
 },

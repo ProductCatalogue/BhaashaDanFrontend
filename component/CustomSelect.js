@@ -1,6 +1,7 @@
 import React, { useState, memo, useMemo,map,some } from 'react'
 import { isEmpty, find } from 'lodash'
 import { View, FlatList, Text, TouchableOpacity,  } from 'react-native'
+import { Field } from 'formik'
 
 
 
@@ -13,6 +14,7 @@ const kOptionListViewStyle = {
   width: '100%',
   alignItems: 'center',
   paddingVertical: 0,
+  
 }
 const renderItemStyle = { flexShrink: 1 }
 function Toggle({ onTouch, checked, iconColor = Colors.primary, ...props }) {
@@ -37,13 +39,14 @@ function SelectBox({
   listEmptyText = 'No results found',
   ...props
 }) {
+  
   const [inputValue, setInputValue] = useState('')
 
   const [showOptions, setShowOptions] = useState(false)
 
   function renderLabel(item) {
     const kOptionsLabelStyle = {
-      fontSize: 12,
+      fontSize: 14,
       color: 'rgba(60, 60, 67, 0.6)',
       ...optionsLabelStyle,
     }
@@ -63,7 +66,7 @@ function SelectBox({
       flexDirection: 'row',
       alignItems: 'center',
       background: '#9BEBCC',
-      paddingVertical: 2,
+     // paddingVertical: 4,
       paddingRight: 0,
       justifyContent: 'space-between',
       ...optionContainerStyle,
@@ -76,13 +79,13 @@ function SelectBox({
         
         {isMulti ? (
           <>
-            <TouchableOpacity hitSlop={hitSlop} style={renderItemStyle} onPress={onPressMultiItem(checked)}>
+            <TouchableOpacity hitSlop={hitSlop} style={renderItemStyle} onPress={onPressMultiItem(checked,item)}>
               {renderLabel(item.item)}
             </TouchableOpacity>
             <Toggle
               iconColor='#0ccb7c'
               checked={checked}
-              onTouch={onPressMultiItem(checked)}
+              onTouch={(item)=>onPressMultiItem(checked,item)}
             />
           </>
         ) : (
@@ -96,14 +99,16 @@ function SelectBox({
       </View>
     )
 
-    function onPressMultiItem(checked) {
+    function onPressMultiItem(checked,item) {
       //alert(onMultiSelect);
-      return (e) => (checked ?onTapClose(item)  : onMultiSelect(item))
+
+      return (e) => {checked ?onTapClose(item) : onMultiSelect(item)}
     }
 
     function onPressItem() {
       return (e) => {
-        setShowOptions(false)
+        setShowOptions(true)
+       // alert(item.id);
         return onChange ? onChange(item) : null
       }
     }
@@ -116,10 +121,11 @@ function SelectBox({
     const kMultiOptionContainerStyle = {
       flexDirection: 'row',
       borderRadius: 20,
-      paddingVertical: 1,
+      padding: 2,
       paddingRight: 5,
       paddingLeft: 4,
-      marginRight: 4,
+      //marginRight: 4,
+      margin:4,
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: '#0ccb7c',
@@ -136,13 +142,14 @@ function SelectBox({
     }
     return (
       <View style={kMultiOptionContainerStyle}>
-        <TouchableOpacity style={{ marginLeft: 2 }} hitSlop={hitSlop} onPress={onPressItem()}>
+        <TouchableOpacity style={{ marginLeft: 2 }} hitSlop={hitSlop} onPress={onPressItem(item)}>
         <Text style={kMultiOptionsLabelStyle}>{label.item} -</Text>
         </TouchableOpacity>
       </View>
     )
 
-    function onPressItem() {
+    function onPressItem(item) {
+    // alert(item.id);
       return (e) => (onTapClose ? onTapClose(item) : null)
     }
   }
@@ -156,7 +163,7 @@ function SelectBox({
     isMulti,
     options,
     value,
-    selectedValues=[],
+    selectedValues,
     arrowIconColor = '#0ccb7c',
     searchIconColor = '#0ccb7c',
     toggleIconColor = '#0ccb7c',
@@ -164,10 +171,14 @@ function SelectBox({
     multiSelectInputFieldProps,
     listOptionProps = {},
   } = props
+  /*
   const filteredSuggestions = useMemo(
     () => options.filter((suggestion) => suggestion.item.toLowerCase().indexOf(inputValue.toLowerCase()) > -1),
     [inputValue, options]
   )
+*/
+  const filteredSuggestions = useMemo(
+    () => options.filter((currentItem)=>!selectedValues.some(i=>currentItem.id == i.id)),    [selectedValues, options])
 
   function multiListEmptyComponent() {
     const kMultiListEmptyLabelStyle = {
@@ -178,7 +189,7 @@ function SelectBox({
     return (
       <TouchableOpacity
         width="100%"
-        style={{ flexGrow: 1, width: '100%' }}
+        style={{ height:25,flexGrow: 1, width: '100%' }}
         hitSlop={hitSlop}
         onPress={onPressShowOptions()}>
         <Text style={kMultiListEmptyLabelStyle}>{inputPlaceholder}</Text>
@@ -203,7 +214,7 @@ function SelectBox({
     fontSize: 10,
     //color: 'rgba(60, 60, 67, 0.6)',
     color:'black',
-    paddingBottom: 4,
+    paddingBottom: 6,
     ...labelStyle,
     borderWidth:0,
     top:-8,
@@ -218,9 +229,9 @@ function SelectBox({
     width: '100%',
     borderColor: '#ddd',
     //borderBottomWidth: 1,
-    paddingTop: 6,
+    paddingTop: 4,
     paddingRight: 20,
-    paddingBottom: 8,
+    paddingBottom: 4,
     ...containerStyle,
   }
   const labelContainer= {
@@ -296,7 +307,7 @@ function SelectBox({
 
   function kSelectedItemStyle() {
     return {
-      fontSize: 12,
+      fontSize: 14,
       color: isEmpty(value.item) ? 'rgba(60, 60, 67, 0.3)' : '#000',
       ...selectedItemStyle,
     }
@@ -317,7 +328,7 @@ function SelectBox({
       paddingVertical: 4,
       paddingRight: 0,
       color: '#000',
-      fontSize: 12,
+      fontSize: 14,
       flexGrow: 1,
       ...inputFilterStyle,
     }

@@ -71,15 +71,24 @@ const data=[
 ]
 
 
-const Header=()=>{
+const Header=(props)=>{
        // alert('1');
+       
         return(
             
-                <View style={localStyles.header}>
+                
                    
+                   props.showSearch=="true"?
+                    
+                    <View style={localStyles.header}>
                     <TextInput name='Search' placeholder='Search' style={localStyles.searchField}/>
                     <View style={localStyles.iconStyle}><Ionicons name="search-outline" size={18} color="black" /></View>
-                </View>
+                    </View>
+                    
+                    :
+                    <View style={localStyles.header}></View>
+                    
+                
              
             
         );

@@ -2,6 +2,7 @@ import React from 'react';
 //import react, { Component } from 'react';
 import {  View,Text,Image} from 'react-native';
 
+
 import Styles from '../constant/GlobalStyles'
 
 const Home=(props)=>{
@@ -22,7 +23,7 @@ const Home=(props)=>{
                       src="https://www.youtube.com/embed/C0DPdy98e4c"
                       frameBorder="0"
                       allow="autoplay; encrypted-media"
-                      allowfullscreen
+                      allowFullScreen={true}
                       title="video"
                       /><br/>
                   </View>
@@ -30,15 +31,23 @@ const Home=(props)=>{
               </View>
               <View style={Styles.homeButtonContainer}>
                 <Text style={[Styles.button,Styles.textWhite]} onPress={()=>handleSignIn({...props,"isCreate":false})}>Sign In</Text>
-                <Text style={[Styles.button,Styles.textWhite]} onPress={()=>handleSignIn({...props,"isCreate":true})}>Register</Text>
+                <Text style={[Styles.button,Styles.textWhite]} onPress={()=>handleRegister({...props,"isCreate":true})}>Register</Text>
               </View>
           </View>
         );                    
 }
 
 const handleSignIn=(props)=>{
-  //alert("before");
+ 
+  props.navigation.navigate('Login',{isCreate:props.isCreate});
+  return;
+  //alert("after");
+}
+const handleRegister=(props)=>{
+  
   props.navigation.navigate('LoginOrRegister',{isCreate:props.isCreate});
+  return;
+  
   //alert("after");
 }
 export default Home;

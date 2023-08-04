@@ -3,6 +3,10 @@ import Colors from './color';
 
 
 export default StyleSheet.create({
+  errorText: {
+    fontSize: 10,
+    color: 'red',
+  },
     header:{
         fontFamily:'Montserrat',
         fontSize:'36px',
@@ -10,6 +14,7 @@ export default StyleSheet.create({
         fontStyle:'Bold',
         lineHeight:'50px',
     },
+    
     greetingText:{
         fontFamily:'Montserrat',
         fontSize:'24px',
@@ -67,6 +72,15 @@ export default StyleSheet.create({
         backgroundColor: 'white',
         
       },
+      errorLabelContainer: {
+        paddingHorizontal: 0,
+        backgroundColor: '#9BEBCC',
+        borderColor:'red',
+        margin:5,
+        borderWidth:1,
+        borderRadius:5,
+        justifyContent:'center',     
+      },
       logo: {
         alignContent:'center',
         shadowColor: "black",
@@ -84,9 +98,11 @@ export default StyleSheet.create({
       }, 
       textGreen:{
         color:'#0ccb7c', 
+        textAlign:'center',
       },
       textWhite:{
         color:'#FCFCFC',
+        textAlign:'center',
       },
       loginHeaderText:{
         fontFamily: 'Montserrat',
@@ -108,26 +124,32 @@ export default StyleSheet.create({
       button:{
         backgroundColor:'#0ccb7c',
         borderRadius:5,
-        paddingHorizontal:10,
+        textAlign:'center',
+       // paddingHorizontal:10,
         paddingVertical:5,
         fontFamily: 'Roboto',
         fontStyle:'Medium',
         fontSize:'16px',
         fontWeight:'500',
         lineHeight:'20px',
+        width:'85px',
+        //margin:5,
+       //width:'Auto',
         shadowOffset:{
           width:0,
           height:0,
-          }
+          },
       },
       backGroundGreen:{
         backgroundColor:'#0ccb7c',
       },
       backGroundWhite:{
         backgroundColor:Colors.LoginRow1Color,
+        
       },
       backGroundVeryLightGreen:{
         backgroundColor:Colors.HomeColor,
+        
       },
       homeButtonContainer:{
         flexDirection:'row',

@@ -9,5 +9,6 @@ LoginRow2Color:'#0ccb7c',
 HomeColor:'#effff9',
 dashboardRow1Color:'#e3eaea',
 dashboardRow2Color:'#0ccb7c',
+errorBorder:'red',
 }
 export default Colors;

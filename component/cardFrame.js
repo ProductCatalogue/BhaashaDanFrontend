@@ -12,8 +12,8 @@ export default class CardFrame extends React.Component {
     constructor(props){
         super(props);
         //alert("card"+this.props.item.description);
-        this.description=this.props.item.description;
-        this.title=this.props.item.key;
+        this.description=this.props.item.text;
+        this.title=this.props.item.id;
     }
      renderLanguages ()  {
         return languages.map(name => <li>{name.item}</li>)
@@ -24,12 +24,12 @@ export default class CardFrame extends React.Component {
             <View style={styles.cardFrameContainer} >
                 <View style={styles.descriptionContainer}>
                 <Text style={styles.frameText}>
-                    {this.description}
+                 {this.title}   {this.description}
                 </Text>
                 </View>
                 {
                 this.props.workType=="Uploaded"?
-                <Image style={styles.titleContainer} source={require("../assets/iiitnew.png")} />
+                <Image style={styles.titleContainer} source={{uri:this.props.item.image}} />
                 :
                 <View/>
                 }
@@ -50,17 +50,20 @@ const styles=StyleSheet.create({
        // borderRadius: 120,
         borderColor:'red',
        // borderWidth:1,
-       // width: 120,
-       // height: 120,
+       width: '100%',
+       height: '100%',
         justifyContent:'center',
-        flexWrap:'nowrap',
+       // flexWrap:'nowrap',
+        overflow:'hidden',
+        textOverflow:'hidden'
     },
     cardFrameContainer:{
         backgroundColor:'white', 
-        width: 60,
-        height: 60,
-        flexWrap:'nowrap',
+        width: 150,
+        height: 150,
+       // flexWrap:'nowrap',
         textOverflow: 'ellipsis',
+        overflow:'hidden',
         margin:10,
     },
     profileEditButton:{
@@ -80,8 +83,9 @@ const styles=StyleSheet.create({
         padding:2,
         margin:2,
         color:'grey',
-        fontSize:5,
+        fontSize:10,
         flexWrap:'nowrap',
+        textOverflow:'ellipsis'
     },
     titleText:{
         color:'green',
@@ -98,16 +102,17 @@ const styles=StyleSheet.create({
         //margin:2,
         color:'green',
         fontSize:5,  
-        width:30,
-        height:30, 
+        width:50,
+        height:50, 
         resizeMode:'contain',
         alignSelf:'flex-end',
         justifyContent:'flex-start',
         flexWrap:'nowrap',
         position:'absolute',
-        top:30,
-        left:30,
+        top:100,
+        left:100,
         aspectRatio:1,
+        overflow:'hidden',
     }
     
     

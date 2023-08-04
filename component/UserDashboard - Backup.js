@@ -5,6 +5,7 @@ import { StyleSheet, Text, View,Image,TouchableOpacity,Modal, FlatList, Activity
 import axios from "axios";
 //import { useInfiniteQuery } from 'react-query';
 
+
 import CardFrame from './cardFrame';
 import Styles from '../constant/GlobalStyles'
 import Header from './Header';
@@ -13,6 +14,27 @@ import ButtonTypeRadio from './ButtonTypeRadio';
 import ModalView from './ModalView';
 
 import Colors from '../constant/color'
+
+const borderColor='#0ccb7c'
+
+const knownLanguage=[
+    {
+        item:"Hindi",
+        key:"Hindi"
+
+    },
+    {
+        item:"English",
+        key:"English"
+
+    },
+    {
+        item:"Bengali",
+        key:"Bengali"
+
+    }
+]
+
 
 const data=[
     {
@@ -35,24 +57,24 @@ export default class UserDashboard extends Component {
     propsSourceObject={};
     selectedItem={};
     //pendingItemToRender=[];
-    onEndReachedCalledDuringMomentum;
     pageSize=10;
     pendingPageNumber=1;
     uploadedPageNumber=1;
     uploadedTotalCount=1;
     pendingTotalCount=1;
     pendingItemToRender=[]; 
-//    itemToRender={Uploaded:{},Pending:{}};
+    uploadedItemToRender=[];
     state={
-        selectedLanguage:"",
-        workType:"Pending",
+        selectedLanguage:"malayalam",
+        workType:"Uploaded",
         modalVisible:false,
-        isLoading:false,
+        isLoading:true,
         refreshing:false,
-        itemToRender:{Uploaded:{},Pending:{}}
+
     }
 constructor(props){
         super(props);
+
         if(this.props.route && this.props.route.params){// && this.props.route.params.user!=undefined && this.props.route.params.user!=null){
         this.propsSourceObject=this.props.route.params;
         //alert("userdashboard param exists"+this.propsSourceObject);
@@ -61,93 +83,80 @@ constructor(props){
         this.propsSourceObject=this.props;
         //alert("userdashboard param not exists "+propsSourceObject);
         }
-        for(var i=0;i<this.propsSourceObject.user.languages.length;i++){
-        this.state.itemToRender.Uploaded[this.propsSourceObject.user.languages[i].key]={isPrevApiCalled:false,count:1,items:[],pagenumber:1,lastPageNumber:-1};
-
-        this.state.itemToRender.Pending[this.propsSourceObject.user.languages[i].key]={isPrevApiCalled:false,count:1,items:[],pagenumber:1,lastPageNumber:-1};
-       
-        }
-        this.state.selectedLanguage=this.propsSourceObject.user.languages[0];
-
+      /*  for(var i=0;i<this.pageSize && i<data.length;i++)
+            this.pendingItemToRender[i]=data[i];*/
              this.getParagraph();
 }
-updateAPICall(){
-    this.state.itemToRender["Uploaded"][this.state.selectedLanguage.key].isPrevApiCalled=false;
-   this.onCardClick(this.selectedItem);
-}
+
  getParagraph(){
-    
-    if(this){
     let self=this;
-    
+    var pagenumber,totalCount;
 
-var lan=this.state.selectedLanguage.key;
-var worktype=this.state.workType;
-var pagenumber=this.state.itemToRender[worktype][lan].pagenumber;
-var lastPageNumber=this.state.itemToRender[worktype][lan].lastPageNumber;
-
-    var apiUrl= worktype=='Pending'?'api/paragraph?':'api/job?';
-    apiUrl=apiUrl+'language='+lan+'&page='+pagenumber;
-   
-    //alert(apiUrl);
-   this.setState({isLoading:true,refreshing:true});
+    if(self.state.workType=='Pending')
+    {
+    pagenumber=self.pendingPageNumber;
+    totalCount=self.pendingTotalCount;
+    }
+    else{
+    pagenumber=self.uploadedPageNumber;
+    totalCount=self.uploadedTotalCount;
+    }
+    if((pagenumber-1)*self.pageSize>=totalCount){
+        self.setState({isLoading:false,refreshing:false});
+        return;
+    }
+    var apiUrl=self.state.workType=='Pending'?'api/paragraph?page='+self.pendingPageNumber:'api/job?page='+self.uploadedPageNumber;
+    apiUrl=apiUrl+'&language='+self.state.selectedLanguage;
+    alert(apiUrl);
+   self.setState({isLoading:true,refreshing:true});
     axios({
         method: 'get',
         url: apiUrl,
        // data: payload
       }).then(function (response) {
-      //  alert("results"+JSON.stringify(response.data.results) );
-       // if(self.state.workType=='Pending'){
-        self.state.itemToRender[worktype][lan].isPrevApiCalled=true;
-            self.state.itemToRender[worktype][lan].count=response.data.count;
-            //alert(response.data.next);
-            self.state.itemToRender[worktype][lan].lastPageNumber=pagenumber;
-            if(response.data.next && response.data.next!=null)
-                self.state.itemToRender[worktype][lan].pagenumber=self.state.itemToRender[worktype][lan].pagenumber+1;
-                if(pagenumber==lastPageNumber){
-                    
-                    var j=(pagenumber-1)*self.pageSize-1;
-                    var i=self.state.itemToRender[worktype][lan].items.length;
-                    i--;
-                        while(i>j){
-                            i--;
-                            self.state.itemToRender[worktype][lan].items.pop();
-                        }
-                   }
+        alert(response.data.results );
+        if(self.state.workType=='Pending'){
+            self.pendingTotalCount=response.data.count;
+            self.pendingPageNumber=self.pendingPageNumber+1;
+            alert("count "+self.pendingTotalCount);
             for(var i=0; i<response.data.results.length;i++)
-                self.state.itemToRender[worktype][lan].items.push(response.data.results[i]);
-
-       self.setState({isLoading:false,refreshing:false});
+                self.pendingItemToRender.push(response.data.results[i]);
+        }
+        else{
+            self.uploadedTotalCount=response.data.count;
+            self.uploadedPageNumber=self.uploadedPageNumber+1;
+            alert("count "+self.uploadedPageNumber);
+            for(var i=0; i<response.data.results.length;i++)
+                self.uploadedItemToRender.push(response.data.results[i]);
+        }
+            
+        
+       // self.setState({pendingItemToRender:response.data.results});
+       self.setState({isLoading:false});//,refreshing:false});
         //self.pendingItemToRender=response.data.results;
         console.log(response.data);
-        //self.onEndReachedCalledDuringMomentum = true;
         })
         .catch(function (error) {
            // self.pageNumber=self.pageNumber-1;
           console.log(error);
-          self.setState({isLoading:false,refreshing:false});
-          alert("API call fails with error:"+error);
-         // self.onEndReachedCalledDuringMomentum = true;
+          self.setState({isLoading:false});//,refreshing:false});
+          alert(error);
         });
         
 }
- }
 onLanguageChange(language){
+        //////alert("this"+this);
+        alert("language"+language);
+       // this.setState({selectedLanguage:language});
        this.state.selectedLanguage=language;
-       if(!this.state.itemToRender[this.state.workType][this.state.selectedLanguage.key].isPrevApiCalled)
-        this.getParagraph();
-        else
-        this.setState({selectedLanguage:language});
-}
-setWorkType(){
-       if(this.state.workType=="Pending")
-        this.state.workType="Uploaded";
-       else
-        this.state.workType="Pending";
-    if(!this.state.itemToRender[this.state.workType][this.state.selectedLanguage.key].isPrevApiCalled)
        this.getParagraph();
-    else
-       this.setState({workType:this.state.workType});
+}
+setWorkType(workType){
+        ////////alert("old "+this.state.workType);
+       // //////alert("new "+workType);
+       // this.setState({workType:workType});
+       this.state.workType=workType;
+       this.getParagraph();
 }
 renderEmpty(){
         return(
@@ -158,14 +167,32 @@ renderEmpty(){
 }
 fetMoreData(){
     this.getParagraph();
- 
+    /*
+for(var j=(this.pageNumber-1)*this.pageSize;(j<this.pageNumber*this.pageSize && j<data.length);j++){ 
+ this.pendingItemToRender[j]=data[j];
+}
+*/
 }
 getData = async () => {
-   
+    /*
+    if(this.state.isLoading){
+    this.fetMoreData();
+    this.setState({isLoading:!this.state.isLoading});
+    }
+    */
 }
 fetMoreDataEnd=()=>{
     this.getParagraph();
-  
+    /*
+    if(!this.state.isLoading)
+    { 
+    this.pageNumber+=1;
+    this.setState({
+                isLoading:!this.state.isLoading},async()=>{    
+                this.getData();
+                })
+    }
+    */
 }
 fetMoreDataScroll(){
     //alert("Scroll");
@@ -179,7 +206,7 @@ this.setState({modalVisible:!this.state.modalVisible})
 render(){
         return(
             <View style={localStyles.container}>      
-                <Header showSearch="false"/>
+                <Header/>
                 <View style={localStyles.middleContainer}>
                 </View>
                 <View style={localStyles.lastContainer}>
@@ -189,7 +216,7 @@ render(){
                     <View style={localStyles.content}>
                         <View style={localStyles.lanConatiner}>
                             <View style={{justifyContent:'flex-start',flexDirection:'row',flex:4,flexWrap:'wrap'}}>
-                                 { this.propsSourceObject.user.languages.map(item => 
+                                 { knownLanguage.map(item => 
                                 <ButtonTypeRadio 
                                 key={item.key}
                                 style={item==this.state.selectedLanguage?[{...localStyles.activeButtonStyle,...localStyles.activeWorkType}]:[{...localStyles.buttonStyle,...localStyles.passiveWorkType}]} 
@@ -198,31 +225,30 @@ render(){
                                 />)}
                             </View>
                             <View style={{justifyContent:'flex-end',flexDirection:'row',flex:3,flexWrap:'wrap'}}>
-                                <TouchableOpacity onPress={this.setWorkType.bind(this)} ><Text style={[{...localStyles.toggleFirstHalf},this.state.workType!="Uploaded"?{...localStyles.passiveWorkType}:{...localStyles.activeWorkType}]}>Uploaded</Text></TouchableOpacity>
-                                <TouchableOpacity onPress={this.setWorkType.bind(this)} ><Text style={[{...localStyles.toggleSecondHalf},this.state.workType!="Pending"?{...localStyles.passiveWorkType}:{...localStyles.activeWorkType}]}>Pending</Text></TouchableOpacity>
+                                <TouchableOpacity onPress={()=>this.setWorkType("Uploaded")} ><Text style={[{...localStyles.toggleFirstHalf},this.state.workType!="Uploaded"?{...localStyles.passiveWorkType}:{...localStyles.activeWorkType}]}>Uploaded</Text></TouchableOpacity>
+                                <TouchableOpacity onPress={()=>this.setWorkType("Pending")} ><Text style={[{...localStyles.toggleSecondHalf},this.state.workType!="Pending"?{...localStyles.passiveWorkType}:{...localStyles.activeWorkType}]}>Pending</Text></TouchableOpacity>
                             </View>
                         </View>
                         <View style={localStyles.tileContainer}>
                         {this.state.isLoading?
                         <View>
                             <ActivityIndicator size='large'/>
-                            
+
                         </View>
                         :
                         
                        <FlatList
-                       keyExtractor={(item) => item.id}
                        contentContainerStyle={localStyles.tileContainer}
-                       data={this.state.itemToRender[this.state.workType][this.state.selectedLanguage.key].items}
+                       data={this.state.workType=='Pending'?this.pendingItemToRender:this.uploadedItemToRender}
                        renderItem={({item})=> <CardFrame item={item} key={item.key} workType={this.state.workType} onPress={this.onCardClick.bind(this)}/>}
-                       onEndReached={this.getParagraph}
-                       onEndReachedThreshold={0.5}
+                       onEndReachedThreshold={0.6}
+                       onEndReached={this.fetMoreDataEnd.bind(this)}
                        refreshing={this.state.refreshing}
-                       onScroll={this.fetMoreDataEnd.bind(this)}
+                       //onScroll={this.fetMoreDataScroll.bind(this)}
                        ListEmptyComponent={this.renderEmpty}
                        initialNumToRender={this.pageSize}
-                       //onMomentumScrollBegin={() => {this.onEndReachedCalledDuringMomentum = false;}}
                        />
+                       
                         }
                         </View>  
                     </View>
@@ -232,12 +258,10 @@ render(){
                 transparent={true}
                 visible={this.state.modalVisible}
                 onRequestClose={this.onCardClick.bind(this)} 
-                
                 >
                     <ModalView 
                     item={this.selectedItem}
                     onPressAction={this.onCardClick.bind(this)}
-                    onUploadAction={this.updateAPICall.bind(this)}
                     workType={this.state.workType}
                     />
                 </Modal>        
@@ -252,7 +276,8 @@ const localStyles= StyleSheet.create({
         justifyContent:'center',
         //height:'10%',
         flex:1,
-        width:'100%', 
+        width:'100%',
+        
        // flexGrow:1,
     },
     middleContainer:{
@@ -294,9 +319,12 @@ const localStyles= StyleSheet.create({
         justifyContent: 'flex-start',
         flexWrap:'nowrap',
         overflow:'auto',
-        zIndex:0,
+        
+        
+       zIndex:0,
       },
       content:{
+        
         // height:'100%',
         width:'65%',
         flex:7,
@@ -307,10 +335,11 @@ const localStyles= StyleSheet.create({
          alignContent:'flex-start',
          flexWrap:'wrap',
          //overflow:'auto',
-         // top:100,
+        // top:100,
        },
-      tileContainer:{ 
-        flex:9,
+      tileContainer:{
+        
+       flex:9,
         width:'100%',
         flexDirection:'row',
         backgroundColor: '#e3eaea',
@@ -318,8 +347,8 @@ const localStyles= StyleSheet.create({
         justifyContent: 'flex-start',
         alignContent:'flex-start',
         flexWrap:'wrap',
-        //overflow:'auto',
-        // top:100,
+        overflow:'auto',
+       // top:100,
       },
       lanConatiner:{ 
         flex:1,
@@ -391,5 +420,7 @@ const localStyles= StyleSheet.create({
         fontWeight:'500',
         fontStyle:'normal',
         lineHeight:'20px',
+        
       }
+
 });
