@@ -94,7 +94,8 @@ export default StyleSheet.create({
         },
         shadowOpacity: 0.5,
         shadowRadius: 2,
-        elevation:5
+        elevation:5,
+        overflow:'auto',
       }, 
       textGreen:{
         color:'#0ccb7c', 
@@ -153,7 +154,8 @@ export default StyleSheet.create({
       },
       homeButtonContainer:{
         flexDirection:'row',
-        height:'20%',flex:2,
+        height:'20%',
+        //flex:2,
         justifyContent:'space-evenly',
         alignItems:'flex-start',
         backgroundColor:Colors.HomeColor,
@@ -163,11 +165,13 @@ export default StyleSheet.create({
         width:'100%',
         height:'100%', 
         backgroundColor:Colors.HomeColor,
+        overflow:'auto',
         
       },
     homeContentContainer:{
         width:'100%',
-        height:'60%',
+        height:'80%',
+        flex:2,
         backgroundColor:Colors.HomeColor,
         justifyContent:'center',
         alignContent:'center',
@@ -175,7 +179,8 @@ export default StyleSheet.create({
         alignItems:'center',
         flexDirection:'row',
         color:'black',
-        flexWrap:'wrap', 
+       // flexWrap:'wrap',
+      overflow:'auto' ,
         
     },
     homeHeading:{
@@ -184,10 +189,10 @@ export default StyleSheet.create({
       fontFamily: 'Montserrat',
       fontWeight:'500',
       lineHeight:'48.76px',
-        
+      overflow:'visible',
     },
     homeTextContent:{
-      
+      overflow:'visible',
       fontSize:'24px',
       lineHeight:'29.26px',
       fontFamily: 'Montserrat',
@@ -197,10 +202,16 @@ export default StyleSheet.create({
     homeLeftContainer:{
         backgroundColor:Colors.HomeColor,
         flex:1,
+        fontFamily: 'Montserrat',
+       // overflow:'scroll',
+       //justifyContent:'flex-start',
+       overflow:'auto',
     },
     homeRightContainer:{
         backgroundColor:Colors.HomeColor,
         flex:1,
+        overflow:'auto',
+        
     },
       
   });                        

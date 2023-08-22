@@ -21,22 +21,8 @@ export default class CardFrame extends React.Component {
       }
     render(){
         return(
-          <TouchableOpacity onPress={()=>this.props.onPress(this.props.item)}>
-          <View style={{flex:3,flexDirection:'column',background:'white', margin:10}}>
-           
-              
-            {
-                this.props.workType=="Uploaded"?
-                <View style={{flex:1}}>
-                <Image  style={styles.imageStyle} source={{uri:this.props.item.image}} />
-                </View>
-                :
-                <></>
-            }
-            
-            
+            <TouchableOpacity onPress={()=>this.props.onPress(this.props.item)}>
             <ScrollView style={styles.cardFrameContainer} >
-            
                 <View style={styles.descriptionContainer}>
                 <Text style={styles.frameTitle}>
                     {this.title}  
@@ -50,12 +36,18 @@ export default class CardFrame extends React.Component {
                 
                 </View>
                 
+                {
+                this.props.workType=="Uploaded"?
                 
+                <Image  style={styles.imageStyle} source={{uri:this.props.item.image}} />
+                
+                :
+                <></>
+                }
                </ScrollView> 
             
-            
-            </View> 
             </TouchableOpacity>
+            
         );
     }
 }
@@ -70,8 +62,8 @@ const styles=StyleSheet.create({
         borderColor:'red',
        // borderWidth:1,
        width: '100%',
-      // height: '100%',
-       // justifyContent:'center',
+       height: '100%',
+        justifyContent:'center',
       // flexWrap:'nowrap',
       //  overflow:'hidden',
       //  textOverflow:'hidden',
@@ -83,7 +75,6 @@ const styles=StyleSheet.create({
         //left:0,
     },
     cardFrameContainer:{
-      flex:3,
         backgroundColor:'white', 
         width:width*.3,
         height:height*.1,
@@ -95,7 +86,7 @@ const styles=StyleSheet.create({
       //  textOverflow:'',
         ellipsizeMode:'tail',
       // overflow:'hidden',
-       // margin:10,
+        margin:10,
        // position:'absolute',
         
     },
@@ -123,16 +114,14 @@ const styles=StyleSheet.create({
     frameTitle:{
         //backgroundColor:'#0ccb7c',
         //borderRadius:5,
-        width:'100%',
-       textAlign:'center',
-       // padding:2,
-       // margin:2,
-        color:'black',
+        textAlign:'center',
+        padding:2,
+        margin:2,
+        color:'grey',
         fontSize:14,
-        fontWeight:'600',
-       // textOverflow:'ellipsis',
+        fontWeight:'500',
+        textOverflow:'ellipsis',
     },
-    /*
     titleText:{
         color:'green',
         fontSize:5,  
@@ -140,7 +129,6 @@ const styles=StyleSheet.create({
         alignSelf:'flex-start',
         flexWrap:'nowrap',
     },
-    */
     imageStyle:{
         backgroundColor:'grey',
         //borderRadius:5,
@@ -148,20 +136,16 @@ const styles=StyleSheet.create({
         //padding:2,
         //margin:2,
         color:'green',
-       // fontSize:5,  
-       width:'100%',
-       minWidth:'200px',
-       height:'100%',
-      minHeight:'200px',
-      alignSelf:'center',
-     // aspectRatio:1,
-      
-      //alignContent:'center',
-     // verticalAlign:'bottom',
-     // overflow:'visible',
-      //  top:'100px',
+        fontSize:5,  
+       width:100,
+        height:100, 
+      alignSelf:'flex-end',
+      alignContent:'flex-end',
+      verticalAlign:'bottom',
+      overflow:'visible',
+        top:'100px',
        //textAlign:'right',
-      // position:'absolute',
+       position:'absolute',
     },
     titleContainer:{
         backgroundColor:'grey',

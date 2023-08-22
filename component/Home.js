@@ -1,6 +1,6 @@
 import React from 'react';
 //import react, { Component } from 'react';
-import {  View,Text,Image} from 'react-native';
+import {  View,Text,Image, ScrollView} from 'react-native';
 
 
 import Styles from '../constant/GlobalStyles'
@@ -10,8 +10,8 @@ const Home=(props)=>{
           <View style={Styles.homeContainer} >
               <Image style={Styles.logo} source={require("../assets/iiitnew.png")} />
               <View style={Styles.homeContentContainer} >
-                <View style={Styles.homeLeftContainer}>
-                <text style={Styles.homeHeading}>Lorem ipsum dolor sit amet consectetur.</text>
+                <View style={Styles.homeLeftContainer} >
+                <Text style={Styles.homeHeading}>Lorem ipsum dolor sit amet consectetur.</Text>
                   <Text style={Styles.homeTextContent}>
                     
                   Lorem ipsum dolor sit amet consectetur. Leo amet condimentum urna maecenas erat tincidunt. Quis commodo cras in accumsan mi neque. Morbi vivamus a tempor tellus at.
@@ -21,7 +21,7 @@ const Home=(props)=>{
                   <View style={{justifyContent:'center',alignItems:'center',alignContent:'center',alignSelf:'center'}}>
                       <iframe
                       src="https://www.youtube.com/embed/C0DPdy98e4c"
-                      frameBorder="0"
+                      //frameBorder="0"
                       allow="autoplay; encrypted-media"
                       allowFullScreen={true}
                       title="video"
@@ -31,6 +31,7 @@ const Home=(props)=>{
               </View>
               <View style={Styles.homeButtonContainer}>
                 <Text style={[Styles.button,Styles.textWhite]} onPress={()=>handleSignIn({...props,"isCreate":false})}>Sign In</Text>
+                <Text style={[Styles.button,Styles.textWhite,{visibility:'hidden'}]} onPress={()=>handleRegister({...props,"isCreate":true})}>Register</Text>
                 <Text style={[Styles.button,Styles.textWhite]} onPress={()=>handleRegister({...props,"isCreate":true})}>Register</Text>
               </View>
           </View>

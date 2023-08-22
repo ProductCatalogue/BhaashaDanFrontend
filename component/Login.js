@@ -15,14 +15,19 @@ import CustomInput from "../CustomInput"
 
 import * as yup from 'yup';
 
+import { useCookies } from 'react-cookie';
+
+
 
 
 function Login(props)  {
+  const [cookies, setCookie] = useCookies(['bashadan']);
 var propsSourceObject;
 var greetings="Hello, Friends!"; 
 var message="Fill up information and start journey with us"; 
 var propUsername="";
 var isForgotPasswordVisible=false;
+
 
 if(props.route && props.route.params && props.route.params.isCreate!=undefined && props.route.params.isCreate!=null)
 {
@@ -47,6 +52,49 @@ const formValidationSchema = yup.object().shape({
     .min(8, ({ min, value }) => `${min - value.length} characters to go`)
     .required('  Password is required'),
   })
+  function handleFormSubmit(values,props){
+  
+  //alert(values['rememberMe']);
+  const endpoint ='api/auth/'
+    //alert(endpoint);
+    const payload = { username: values['username'], password: values['password'] } ;
+    axios.defaults.baseURL = 'http://bhasha.iiit.ac.in/crowd/';
+    axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
+    const rememberMe=values['rememberMe'];
+    //axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+	//alert(rememberMe+" rememberMe")
+	 let self=props;
+    axios({
+        method: 'post',
+        url: endpoint,
+        data: payload
+      }).then(function (response) {
+        
+        const { token,user} = response.data;
+        axios.defaults.headers.common.Authorization = `Token ${token}`;
+		
+		const lan = user.language.split(',');
+          user.languages=[];
+          for(var i=0;i<lan.length;i++){
+            var newLan={};
+            newLan.key=lan[i];
+            newLan.item=lan[i].charAt(0).toUpperCase() + lan[i].substr(1).toLowerCase();
+            user.languages.push(newLan);
+          }
+          if(rememberMe){
+          var bashadanObject={};
+          bashadanObject.user=user;
+          bashadanObject.token=axios.defaults.headers.common.Authorization;
+          setCookie('bashadan',JSON.stringify(bashadanObject),{path:'/',expires:new Date(dayjs( Date.now()).add(30,'day').format("YYYY-MM-DD"))})
+          }
+		  self.navigation.navigate('UserDashboard',{user:user});
+      })
+      .catch(function (error) {
+        console.log(error);
+        alert("API call fails with error:"+error);
+      });
+}
+
   return (
     <View style={styles.loginContainer}> 
     <View style={{flex:2,backgroundColor:Colors.HomeColor}}>
@@ -95,7 +143,7 @@ const formValidationSchema = yup.object().shape({
             title="SignIn"
            // disabled={!isValid}
             >
-                SignIn
+                Sign In
             </Text>
             
             </View>
@@ -187,41 +235,6 @@ const  CheckboxField =({ ...props }) => {
     </ConfigProvider>
   );
 };
-function handleFormSubmit(values,props){
-  //alert(values['rememberMe']);
-  const endpoint ='api/auth/'
-    //alert(endpoint);
-    const payload = { username: values['username'], password: values['password'] } ;
-    axios.defaults.baseURL = 'http://bhasha.iiit.ac.in/crowd/';
-    axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
-    //axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-	
-	 let self=props;
-    axios({
-        method: 'post',
-        url: endpoint,
-        data: payload
-      }).then(function (response) {
-        
-        const { token,user} = response.data;
-        axios.defaults.headers.common.Authorization = `Token ${token}`;
-		
-		const lan = user.language.split(',');
-          user.languages=[];
-          for(var i=0;i<lan.length;i++){
-            var newLan={};
-            newLan.key=lan[i];
-            newLan.item=lan[i].charAt(0).toUpperCase() + lan[i].substr(1).toLowerCase();
-            user.languages.push(newLan);
-          }
-		  
-		  self.navigation.navigate('UserDashboard',{user:user});
-      })
-      .catch(function (error) {
-        console.log(error);
-        alert("API call fails with error:"+error);
-      });
-}
 
 function handleForgotPassword(){
   

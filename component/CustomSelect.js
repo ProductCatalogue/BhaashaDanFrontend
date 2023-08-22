@@ -71,7 +71,7 @@ function SelectBox({
       justifyContent: 'space-between',
       ...optionContainerStyle,
     }
-    const checked=selectedValues.some(i=>item.id === i.id);
+    const checked=selectedValues.some(i=>item.key === i.key);
     return (
       <View style={kOptionContainerStyle}>
         
@@ -116,7 +116,7 @@ function SelectBox({
 
   function renderGroupItem({ item }) {
     const { onTapClose, options } = props
-    const label = find(options, (o) => o.id === item.id)
+    const label = find(options, (o) => o.key === item.key)
     //const label =  item.item
     const kMultiOptionContainerStyle = {
       flexDirection: 'row',
@@ -178,7 +178,7 @@ function SelectBox({
   )
 */
   const filteredSuggestions = useMemo(
-    () => options.filter((currentItem)=>!selectedValues.some(i=>currentItem.id == i.id)),    [selectedValues, options])
+    () => options.filter((currentItem)=>!selectedValues.some(i=>currentItem.key == i.key)),    [selectedValues, options])
 
   function multiListEmptyComponent() {
     const kMultiListEmptyLabelStyle = {
@@ -256,7 +256,7 @@ function SelectBox({
         
           <View style={{ paddingRight:2}}>
             {isMulti ? (
-              <view>
+              <View>
                  
               <FlatList
               contentContainerStyle={{flexDirection:'row'}}
@@ -270,7 +270,7 @@ function SelectBox({
               />
               
               
-              </view>
+              </View>
             ) : (
               <TouchableOpacity hitSlop={hitSlop} onPress={onPressShowOptions}>
                 <Text style={kSelectedItemStyle()}>{value.item || inputPlaceholder || label}</Text>
@@ -302,7 +302,7 @@ function SelectBox({
   )
 
   function keyExtractor() {
-    return (o) => `${o.id}-${Math.random()}`
+    return (o) => `${o.key}-${Math.random()}`
   }
 
   function kSelectedItemStyle() {

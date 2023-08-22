@@ -151,7 +151,7 @@ onLanguageChange(text) {
     this.setState( {language:[...this.state.language,text ]});
 }
 onLanguageDelete(text) {
-    this.setState( {language:[...(this.state.language.filter(i=>(i.id!=text.id))) ]});
+    this.setState( {language:[...(this.state.language.filter(i=>(i.key!=text.key))) ]});
 }
 onRememberMeChange(text) {
  // ////alert(this.state.rememberMe);
@@ -263,9 +263,9 @@ axios.post('http://bhasha.iiit.ac.in/crowd/api/auth', {
       for(var k=0;k<this.state.language.length;k++){
         //alert(this.state.language[k].id);
         if(k>0)
-          lan=lan+","+this.state.language[k].id;
+          lan=lan+","+this.state.language[k].key;
         else
-          lan=this.state.language[k].id;
+          lan=this.state.language[k].key;
       }
       
       payload.language=lan;

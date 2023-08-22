@@ -2,30 +2,27 @@ import React from 'react';
 import react, { Component } from 'react';
 import { StyleSheet, Text, View,Image,TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons'; 
+import { withCookies, Cookies } from 'react-cookie';
+import { instanceOf } from 'prop-types';
+import GlobalStyles from '../constant/GlobalStyles';
+import { AntDesign } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 
-export default class Profile extends Component {
+
+ class Profile extends Component {
+
+        cookies=instanceOf(Cookies).isRequired;
+      
     propsSourceObject={} ;
     showEdit=false;
     user={};
-    /*user={
-        name:"Amit Kumar",
-        intro:"hjghj bjkhjk kljk hiuhji",
-        location: "Hyderabad",
-        languages:[{id:"Hindi",item:"Hindi"},{id:"English",item:"English"}]
-        }*/
-     state={
+       state={
         data:[]
     }
-        fetchUser=async(prop)=> {
-            const URL = "https://api.sampleapis.com/coffee/hot?id="+prop.name;
-            const resp =await fetch(URL);
-            const data1 = await resp.json();
-            this.setState({data: data1} );
-            
-          }
+
           constructor(props){
             super(props); 
-          
+            
 if(this.props.route && this.props.route.params && this.props.route.params.user!=undefined && this.props.route.params.user!=null)
 {
     this.propsSourceObject=this.props.route.params;
@@ -40,7 +37,7 @@ this.user=this.propsSourceObject.user;
            // this.fetchUsers();
           }
      renderLanguages ()  {
-        return this.user.languages.map(lan => <li key={lan.id}>{lan.item}</li>)
+        return this.user.languages.map(lan => {return(<li key={lan.key} >{lan.item}</li>)})
        //return "hindi";
       }
       editProfile(){
@@ -50,14 +47,15 @@ this.user=this.propsSourceObject.user;
        // this.fetchUsers();
         ////alert(this.state.data);
         return(
-            <View style={styles.profileStyle}>
+            <View>
+                <View style={styles.profileStyleContainer}>
+                <View style={styles.profileStyle}>
                 <View style={styles.imageContainer}>
                     <Image style={styles.profileImageStyle} source={require("../assets/blank-profile.png")} />
                 </View>          
                 <Text style={styles.nameText}>{this.user.first_name} {this.user.last_name}</Text>
-                <Text style={styles.introText}>{this.user.mobile}</Text>
-                <br/><Text style={styles.locationText}> {this.user.dob}</Text>
-                
+                <Text style={styles.introText}><AntDesign name="mobile1" size={18} color="black" /> {this.user.mobile}</Text>
+                <br/><Text style={styles.locationText}><FontAwesome name="birthday-cake" size={18} color="black" /> {this.user.dob}</Text>
                 
                    { this.showEdit==true?
                 <TouchableOpacity style={styles.buttonContainer}>
@@ -77,10 +75,30 @@ this.user=this.propsSourceObject.user;
                     {this.renderLanguages()}
                     </Text>
                 </View>
+                
+                </View>
+                <View style={styles.logout}>
+                <TouchableOpacity style={styles.logout}>
+                    <Text style={[GlobalStyles.button,GlobalStyles.textWhite]} onPress={this.logout.bind(this)}>
+                    Logout
+                    </Text>
+                    </TouchableOpacity>
+                </View>
+                </View>
             </View>
+            
         );
     }
+    logout() {
+        const { cookies } = this.props;
+        
+        cookies.remove('bashadan');
+        
+       // alert(JSON.stringify(this.props.navigation));
+        this.props.navigation.navigate('Home');
+        }
 }
+
 const styles=StyleSheet.create({
     nameText:{
         fontFamily: 'Montserrat',
@@ -127,9 +145,19 @@ profileStyle:{
     alignItems:'center',
     backgroundColor:'#d7f8eb',
     borderRadius:5, 
-    height:'90%',
-    width:'90%',
-   overflow:'auto',
+  //  height:'100%',
+   // width:'100%',
+    //overflow:'auto',
+    
+},
+profileStyleContainer:{
+    alignItems:'center',
+    backgroundColor:'#d7f8eb',
+    borderRadius:5, 
+    height:'100%',
+    width:'100%',
+   // overflow:'auto',
+    
 },
 imageContainer:{
     borderRadius: 120,
@@ -157,6 +185,16 @@ buttonContainer:{
     //verticalAlign:'middle',
     //textAlign:'center',
 },
+logout:{
+   // width:150,
+   // height:50,
+   alignItems:'flex-end',
+    fontSize:5,
+   // borderRadius:5,  
+    textAlignVertical:'center', 
+    
+    //textAlign:'center',
+},
 appButtonText:{
     backgroundColor:'#0ccb7c',
     borderRadius:5,
@@ -182,3 +220,4 @@ appButtonText:{
 }
 
 });
+export default withCookies(Profile);

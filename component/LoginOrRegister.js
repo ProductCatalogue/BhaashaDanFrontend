@@ -239,7 +239,7 @@ const formValidationSchema = yup.object().shape({
            onPress={()=>handleSignIn(props)} 
            title="SIgnIn"
            >
-               SignIn
+               Sign In
            </Text>
            
            </View>
@@ -266,9 +266,9 @@ function handleFormSubmit(values,props){
       for(var k=0;k<values['language'].length;k++){
         //alert(values['language[k].id);
         if(k>0)
-          lan=lan+","+values['language'][k].id;
+          lan=lan+","+values['language'][k].key;
         else
-          lan=values['language'][k].id;
+          lan=values['language'][k].key;
       
       
       payload.language=lan;

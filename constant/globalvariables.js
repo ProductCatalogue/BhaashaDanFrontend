@@ -1,56 +1,56 @@
 const globalconst={ language_OPTIONS:[
     {
       item: 'Assamese',
-      id: 'assamese',
+      key: 'assamese',
     },
     {
       item: 'Bengali',
-      id: 'bengali',
+      key:'bengali',
     },
     {
       item: 'English',
-      id: 'english',
+      key: 'english',
     },
     {
       item: 'Gujrati',
-      id: 'gujrati',
+      key: 'gujrati',
     },
     {
       item: 'Hindi',
-      id: 'hindi',
+      key: 'hindi',
     },
     {
       item: 'Kannada',
-      id: 'kannada',
+      key: 'kannada',
     }, 
     {
       item: 'Malayalam',
-      id: 'malayalam',
+      key: 'malayalam',
     },  
     {
 
       item: 'Manipuri',
-      id: 'manipuri',
+      key: 'manipuri',
     },
     {
       item: 'Marathi',
-      id: 'marathi',
+      key: 'marathi',
     },
     {
       item: 'Oriya',
-      id: 'oriya',
+      key: 'oriya',
     },
     {
       item: 'Punjabi',
-      id: 'punjabi',
+      key: 'punjabi',
     },
     {
       item: 'Tamil',
-      id: 'tamil',
+      key: 'tamil',
     },
     {
       item: 'Telegu',
-      id: 'telegu',
+      key: 'telegu',
     }
    ],
   }
