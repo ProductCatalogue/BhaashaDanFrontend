@@ -12,8 +12,8 @@ const globalconst={ language_OPTIONS:[
       key: 'english',
     },
     {
-      item: 'Gujrati',
-      key: 'gujrati',
+      item: 'Gujarati',
+      key: 'gujarati',
     },
     {
       item: 'Hindi',
@@ -49,8 +49,8 @@ const globalconst={ language_OPTIONS:[
       key: 'tamil',
     },
     {
-      item: 'Telegu',
-      key: 'telegu',
+      item: 'Telugu',
+      key: 'telugu',
     }
    ],
   }
